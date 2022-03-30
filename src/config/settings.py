@@ -52,6 +52,7 @@ INSTALLED_APPS = [
 
     # third-party apps
     'rest_framework',
+    'rest_framework_simplejwt',
 ]
 
 MIDDLEWARE = [
@@ -150,7 +151,25 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny',
     ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
     'PAGE_SIZE': 10,
     "DATE_INPUT_FORMATS": ["%d-%m-%Y"],
     'DATETIME_FORMAT': "%d-%m-%Y %H:%M:%S",
 }
+
+# Email settings
+SERVER_EMAIL = ENV.get('EMAIL_HOST_USER')
+DEFAULT_FROM_EMAIL = ENV.get('EMAIL_HOST_USER')
+EMAIL_SUBJECT_PREFIX = '[Blog Application] '
+MANAGERS = (
+    ('Us', ENV.get('EMAIL_HOST_USER')),
+)
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_HOST = ENV.get('EMAIL_HOST', 'smtp.gmail.com')
+EMAIL_HOST_USER = ENV.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = ENV.get('EMAIL_HOST_PASSWORD')
+
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True

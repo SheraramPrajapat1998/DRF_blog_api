@@ -27,6 +27,7 @@ class ApiRoot(generics.GenericAPIView):
     def get(self, request, *args, format=None, **kwargs):
         return Response({
             'users': reverse(account_api_views.UserListAPIView.name, request=request, format=format),
+            'user_register': reverse(account_api_views.UserRegisterAPIView.name, request=request, format=format),
        })
 
 api_urlpatterns = [
