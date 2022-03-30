@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'account.apps.AccountConfig',
     'blog.apps.BlogConfig',
     'category.apps.CategoryConfig',
+    'comment.apps.CommentConfig',
 
 
     # third-party apps
