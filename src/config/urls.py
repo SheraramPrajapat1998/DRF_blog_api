@@ -20,12 +20,14 @@ from rest_framework import generics
 from rest_framework.reverse import reverse
 from rest_framework.response import Response
 from account.api import views as account_api_views
+from core.api import views as core_api_views
 
 class ApiRoot(generics.GenericAPIView):
     name = 'api-root'
 
     def get(self, request, *args, format=None, **kwargs):
         return Response({
+            'health_check': reverse(core_api_views.APIHealthCheck.name, request=request, format=format),
             'users': reverse(account_api_views.UserListAPIView.name, request=request, format=format),
             'user_register': reverse(account_api_views.UserRegisterAPIView.name, request=request, format=format),
        })
@@ -34,6 +36,7 @@ api_urlpatterns = [
     path('api/', include([
         path('', ApiRoot.as_view(), name=ApiRoot.name),
         path('account/', include('account.api.urls')),
+        path('health/', core_api_views.APIHealthCheck.as_view(), name=core_api_views.APIHealthCheck.name),
     ])),
 ]
 
