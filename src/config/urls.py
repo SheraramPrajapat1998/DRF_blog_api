@@ -16,7 +16,30 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from rest_framework import generics
+from rest_framework.reverse import reverse
+from rest_framework.response import Response
+from account.api import views as account_api_views
+
+class ApiRoot(generics.GenericAPIView):
+    name = 'api-root'
+
+    def get(self, request, *args, format=None, **kwargs):
+        return Response({
+            'users': reverse(account_api_views.UserListAPIView.name, request=request, format=format),
+            'user_register': reverse(account_api_views.UserRegisterAPIView.name, request=request, format=format),
+       })
+
+api_urlpatterns = [
+    path('api/', include([
+        path('', ApiRoot.as_view(), name=ApiRoot.name),
+        path('account/', include('account.api.urls')),
+    ])),
+]
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls'))
 ]
+
+urlpatterns += api_urlpatterns
