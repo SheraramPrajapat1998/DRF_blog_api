@@ -100,7 +100,7 @@ To Setup this project at your local pls follow these steps:
 
 - [@Sheraram Prajapat](https://github.com/SheraramPrajapat1998)
 
-<div align="center">
+<div>
 <a href="https://www.linkedin.com/in/sheraramprajapat1998" target="_blank">
 <img src=https://img.shields.io/badge/linkedin-%231E77B5.svg?&style=for-the-badge&logo=linkedin&logoColor=white alt=linkedin style="margin-bottom: 5px;" />
 </a>
