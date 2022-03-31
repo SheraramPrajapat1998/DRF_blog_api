@@ -4,6 +4,7 @@ from django.db import models
 
 from django.utils.translation import gettext_lazy as _
 from category.models import Category
+from comment.models import Comment
 from django.contrib.contenttypes.models import ContentType
 
 # Create your models here.
@@ -34,3 +35,18 @@ class Post(models.Model):
     def __str__(self):
         return self.title
 
+    @property
+    def comments(self):
+        instance = self
+        qs = Comment.objects.filter_by_instance(instance)
+        return qs
+
+    @property
+    def get_content_type(self):
+        instance = self
+        content_type = ContentType.objects.get_for_model(instance.__class__)
+        return content_type
+
+    @property
+    def total_comments(self):
+        return self.comments.count()
