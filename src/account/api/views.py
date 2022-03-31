@@ -6,6 +6,7 @@ from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
 from . import serializers
+from core.api.permissions import IsStaffOrUserOrReadOnly, IsUserOrReadOnly
 
 User = get_user_model()
 
@@ -23,6 +24,7 @@ class UserDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = serializers.UserSerializer
     queryset = User.objects.all().order_by('id')
     name = 'user-detail'
+    permission_clases = (IsStaffOrUserOrReadOnly, )
 
 
 class UserRegisterAPIView(generics.GenericAPIView):

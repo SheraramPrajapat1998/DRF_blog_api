@@ -19,5 +19,3 @@ class Command(BaseCommand):
         urls = [v for k,v in get_resolver().reverse_dict.items()]
         urls_list = [url[0][0][0] for url in urls]
         return list(set(urls_list))
-
-   

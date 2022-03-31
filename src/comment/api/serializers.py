@@ -32,11 +32,12 @@ class CommentChildSerializer(serializers.ModelSerializer):
 class CommentDetailSerializer(serializers.ModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='comment-detail', lookup_field='pk')
     replies = serializers.SerializerMethodField()
+    user = UserPublicSerializer(read_only=True)
 
     class Meta:
         model = Comment
         fields = (
-            'url', 'id', 'content_type', 'object_id',
+            'url', 'user', 'id', 'content_type', 'object_id',
             'content', 'replies', 'total_replies',
             'created_at', 'updated_at'
         )
