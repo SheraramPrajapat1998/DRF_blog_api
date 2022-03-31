@@ -51,11 +51,13 @@ INSTALLED_APPS = [
     'blog.apps.BlogConfig',
     'category.apps.CategoryConfig',
     'comment.apps.CommentConfig',
+    'core.apps.CoreConfig',
 
 
     # third-party apps
     'rest_framework',
     'rest_framework_simplejwt',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [

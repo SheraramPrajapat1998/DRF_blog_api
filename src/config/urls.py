@@ -20,6 +20,7 @@ from django.urls import path, include
 from rest_framework import generics
 from rest_framework.reverse import reverse
 from rest_framework.response import Response
+from rest_framework import permissions
 
 from account.api import views as account_api_views
 from blog.api import views as blog_api_views
@@ -27,6 +28,8 @@ from category.api import views as category_api_views
 from core.api import views as core_api_views
 from comment.api import views as comment_api_views
 
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
 
 class ApiRoot(generics.GenericAPIView):
     name = 'api-root'
@@ -39,7 +42,21 @@ class ApiRoot(generics.GenericAPIView):
             'posts': reverse(blog_api_views.PostListCreateAPIView.name, request=request, format=format),
             'users': reverse(account_api_views.UserListAPIView.name, request=request, format=format),
             'user_register': reverse(account_api_views.UserRegisterAPIView.name, request=request, format=format),
+            'swagger_endpoints': reverse('schema-swagger-ui', request=request, format=format),
        })
+
+schema_view = get_schema_view(
+    openapi.Info(
+        title="Blog API",
+        default_version="v1",
+        description="Blog API for learning DRF",
+        terms_of_service="https://www.google.com/policies/terms/",
+        contact=openapi.Contact(email=settings.EMAIL_HOST_USER),
+        license=openapi.License(name="BSD License"),
+    ),
+    public=True,
+    permission_classes=(permissions.AllowAny,),
+)
 
 api_urlpatterns = [
     path('api/', include([
@@ -49,6 +66,8 @@ api_urlpatterns = [
         path('category/', include('category.api.urls')),
         path('comments/', include('comment.api.urls')),
         path('health/', core_api_views.APIHealthCheck.as_view(), name=core_api_views.APIHealthCheck.name),
+        path('swagger/', schema_view.with_ui(
+            'swagger', cache_timeout=0), name='schema-swagger-ui'),
     ])),
 ]
 
