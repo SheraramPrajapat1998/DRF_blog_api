@@ -25,6 +25,7 @@ from account.api import views as account_api_views
 from blog.api import views as blog_api_views
 from category.api import views as category_api_views
 from core.api import views as core_api_views
+from comment.api import views as comment_api_views
 
 
 class ApiRoot(generics.GenericAPIView):
@@ -33,6 +34,7 @@ class ApiRoot(generics.GenericAPIView):
     def get(self, request, *args, format=None, **kwargs):
         return Response({
             'categories': reverse(category_api_views.CategoryListAPIView.name, request=request, format=format),
+            'comments': reverse(comment_api_views.CommentListAPIView.name, request=request, format=format),
             'health_check': reverse(core_api_views.APIHealthCheck.name, request=request, format=format),
             'posts': reverse(blog_api_views.PostListCreateAPIView.name, request=request, format=format),
             'users': reverse(account_api_views.UserListAPIView.name, request=request, format=format),
@@ -45,6 +47,7 @@ api_urlpatterns = [
         path('account/', include('account.api.urls')),
         path('blog/', include('blog.api.urls')),
         path('category/', include('category.api.urls')),
+        path('comments/', include('comment.api.urls')),
         path('health/', core_api_views.APIHealthCheck.as_view(), name=core_api_views.APIHealthCheck.name),
     ])),
 ]
