@@ -189,3 +189,11 @@ EMAIL_HOST_PASSWORD = ENV.get('EMAIL_HOST_PASSWORD')
 
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+
+# Authentication Backends Settings
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+    # authentication using email
+    'account.authentication.EmailAuthBackend',
+]
