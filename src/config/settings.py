@@ -48,6 +48,7 @@ INSTALLED_APPS = [
 
     # local apps
     'account.apps.AccountConfig',
+    'activity.apps.ActivityConfig',
     'blog.apps.BlogConfig',
     'category.apps.CategoryConfig',
     'comment.apps.CommentConfig',
