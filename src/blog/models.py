@@ -7,9 +7,6 @@ from category.models import Category
 from comment.models import Comment
 from django.contrib.contenttypes.models import ContentType
 
-# Create your models here.
-
-
 
 class Post(models.Model):
     DRAFT = 'draft'
@@ -49,4 +46,5 @@ class Post(models.Model):
 
     @property
     def total_comments(self):
-        return self.comments.count()
+        num_comments = self.comments.count()
+        return num_comments

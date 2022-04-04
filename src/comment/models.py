@@ -34,7 +34,7 @@ class Comment(models.Model):
         return f"reply {self.id} to comment {self.parent.id} by {self.user}"
 
     def children(self):
-        return Comment.objects.filter(parent=self)
+        return Comment.objects.select_related('user').filter(parent=self)
 
     @property
     def is_parent(self):

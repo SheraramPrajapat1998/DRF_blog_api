@@ -7,7 +7,7 @@ from core.api.permissions import IsStaffOrAuthorOrReadOnly
 
 class PostListCreateAPIView(generics.ListCreateAPIView):
     serializer_class = serializers.PostSerializer
-    queryset = Post.objects.all().order_by('-id')
+    queryset = Post.objects.select_related('author').order_by('-id')
     name = 'post-list'
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
@@ -17,7 +17,7 @@ class PostListCreateAPIView(generics.ListCreateAPIView):
 
 class PostRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = serializers.PostDetailSerializer
-    queryset = Post.objects.all().order_by('-id')
+    queryset = Post.objects.select_related('author').order_by('-id')
     name = 'post-detail'
     permission_classes = [IsStaffOrAuthorOrReadOnly]
 

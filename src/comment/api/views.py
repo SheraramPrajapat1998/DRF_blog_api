@@ -7,7 +7,7 @@ from core.api.permissions import IsStaffOrUserOrReadOnly
 
 class CommentListAPIView(generics.ListCreateAPIView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly, )
-    queryset = Comment.objects.all().order_by('-id')
+    queryset = Comment.objects.select_related('user').all().order_by('-id')
     serializer_class = serializers.CommentSerializer
     name = 'comment-list'
 
@@ -16,7 +16,7 @@ class CommentListAPIView(generics.ListCreateAPIView):
 
 class CommentDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (IsStaffOrUserOrReadOnly, )
-    queryset = Comment.objects.all()
+    queryset = Comment.objects.select_related('user').all()
     serializer_class = serializers.CommentDetailSerializer
     name = 'comment-detail'
 
