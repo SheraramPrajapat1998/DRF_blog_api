@@ -10,8 +10,11 @@ from django.utils.encoding import smart_str, force_str, smart_bytes, DjangoUnico
 from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from core.api.permissions import IsStaffOrUserOrReadOnly, IsUserOrReadOnly
+
 
 User = get_user_model()
+
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = serializers.MyTokenObtainPairSerializer
@@ -27,6 +30,7 @@ class UserDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = serializers.UserSerializer
     queryset = User.objects.all().order_by('id')
     name = 'user-detail'
+    permission_clases = (IsStaffOrUserOrReadOnly, )
 
 
 class UserRegisterAPIView(generics.GenericAPIView):
