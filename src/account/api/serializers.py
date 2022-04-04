@@ -2,6 +2,11 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from rest_framework.exceptions import AuthenticationFailed
+from rest_framework import status
+from django.utils.encoding import smart_str, force_str, smart_bytes, DjangoUnicodeDecodeError
+
 
 User = get_user_model() #returns active User model
 
@@ -97,3 +102,23 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
+
+class ChangePasswordSerializer(serializers.Serializer):
+    old_password = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True)
+    confirm_password = serializers.CharField(required=True)
+
+
+class RequestPasswordResetSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=True, min_length=2)
+
+
+class ResetPasswordSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=True, min_length=2)
+
+
+class SetNewPasswordSerializer(serializers.Serializer):
+    password = serializers.CharField(write_only=True, min_length=3, max_length=68)
+    password2 = serializers.CharField(write_only=True, min_length=3, max_length=68)
+    token = serializers.CharField(write_only=True, min_length=1)
+    uidb64 = serializers.CharField(write_only=True, min_length=1)
