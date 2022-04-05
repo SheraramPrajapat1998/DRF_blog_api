@@ -33,7 +33,7 @@ To Setup this project at your local pls follow these steps:
 4. `[skip this step if you don't want to use MySQL]` Now, create a database in MySQL and a user and grant permissions to newly created user on database.
 
     MySQL create db and user:
-    http://localhost:8000/api/
+
     `sudo mysql -u'root'`
 
     Create DB: `CREATE DATABASE new_database;`
@@ -42,9 +42,10 @@ To Setup this project at your local pls follow these steps:
 
     Create User: `CREATE USER 'username'@'localhost' IDENTIFIED BY 'password';`
 
-    GRANT ALL PERMISSIONS on the database:
+    GRANT ALL PERMISSIONS on the all databases:
+    because running test cases will envolve creating a database.
 
-    `GRANT ALL PRIVILEGES ON new_database.* TO 'username'@'localhost' WITH GRANT OPTION;`
+    `GRANT ALL PRIVILEGES ON *.* TO 'username'@'localhost' WITH GRANT OPTION;`
 
     Then run: `FLUSH PRIVILEGES;` to make sure all changes have been made.
 
