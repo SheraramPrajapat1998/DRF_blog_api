@@ -71,7 +71,9 @@ class Post(models.Model):
 
     @property
     def activity_filter(self, qs, activity_type=None):
-        return qs.filter(activity_type=activity_type) 
+        if activity_type is not None:
+            return qs.filter(activity_type=activity_type)
+        return qs
 
     @property
     def get_all_activity(self):
