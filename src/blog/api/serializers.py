@@ -4,6 +4,7 @@ from account.api.serializers import UserPublicSerializer
 from blog.models import Post
 from comment.api.serializers import CommentSerializer
 from comment.models import Comment
+from activity.api.serializers import ActivityDetailSerializer
 
 class PostSerializer(serializers.ModelSerializer):
     author = UserPublicSerializer(read_only=True)
@@ -15,7 +16,8 @@ class PostSerializer(serializers.ModelSerializer):
             'url', 'id', 'title', 'author', 'content',
             'status', 'status_description', 'image',
             'created_at', 'updated_at', 'published_at',
-            'category', 'total_comments'
+            'category', 'total_comments',
+            'total_activity', 'total_likes'
         )
 
 
@@ -23,6 +25,7 @@ class PostDetailSerializer(serializers.ModelSerializer):
     author = UserPublicSerializer(read_only=True)
     status_description = serializers.ReadOnlyField(source='get_status_display')
     comments = serializers.SerializerMethodField()
+    activity = ActivityDetailSerializer(many=True)
 
     class Meta:
         model = Post
@@ -31,6 +34,10 @@ class PostDetailSerializer(serializers.ModelSerializer):
             'status', 'status_description', 'image',
             'created_at', 'updated_at', 'published_at', 'category',
             'total_comments', 'comments',
+            # 'get_all_activity',
+            'total_activity',
+            'activity',
+            # 'total_likes', 'likes'
         )
 
     def get_comments(self, obj):
