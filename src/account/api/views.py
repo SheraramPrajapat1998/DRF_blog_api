@@ -1,9 +1,12 @@
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
+from django.shortcuts import get_object_or_404
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
+
+from account.models import Referral
 from . import serializers
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import smart_str, force_str, smart_bytes, DjangoUnicodeDecodeError
@@ -171,3 +174,31 @@ class SetNewPasswordAPIView(generics.GenericAPIView):
             user.save()
             return Response(data={'success': True, 'message': 'Password reset success'}, status=status.HTTP_200_OK)
         return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ReferralUserAPIView(generics.GenericAPIView):
+    name = 'user_referral'
+    model = User
+    ref_model = Referral
+
+    def get(self, request, code, format=None):
+        if request.user.is_anonymous:
+            print('User is annonymoususer....')
+            return Response(data={'message': "User not logged in.", 'success': False})
+        if request.user.code == code:
+            print('self referral...')
+            return Response(data={'message': "Can't refer to yourself", 'success': False})
+        try:
+            user = get_object_or_404(self.model, code=code)
+        except self.model.DoesNotExist:
+            user = None
+            return Response(data={'success':False, 'message':"Invalid referral code"})
+        print('current_user', request.user, 'user_obj', user)
+        code_applied = self.ref_model.objects.filter(referred_to=request.user.pk).exists()
+        if code_applied:
+            print('Already used referral code...')
+            return Response(data={'success': False, 'message': "You have already used someone's referral code."})
+        if user:
+            ref = self.ref_model.objects.create(referred_to=request.user, referred_by=user)
+            print(ref)
+            return Response(data={'success': True, 'message': 'Referral Added successfully!'})
