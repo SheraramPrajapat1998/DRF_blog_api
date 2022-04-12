@@ -183,22 +183,17 @@ class ReferralUserAPIView(generics.GenericAPIView):
 
     def get(self, request, code, format=None):
         if request.user.is_anonymous:
-            print('User is annonymoususer....')
             return Response(data={'message': "User not logged in.", 'success': False})
         if request.user.code == code:
-            print('self referral...')
             return Response(data={'message': "Can't refer to yourself", 'success': False})
         try:
             user = get_object_or_404(self.model, code=code)
         except self.model.DoesNotExist:
             user = None
             return Response(data={'success':False, 'message':"Invalid referral code"})
-        print('current_user', request.user, 'user_obj', user)
         code_applied = self.ref_model.objects.filter(referred_to=request.user.pk).exists()
         if code_applied:
-            print('Already used referral code...')
             return Response(data={'success': False, 'message': "You have already used someone's referral code."})
         if user:
             ref = self.ref_model.objects.create(referred_to=request.user, referred_by=user)
-            print(ref)
             return Response(data={'success': True, 'message': 'Referral Added successfully!'})

@@ -127,7 +127,6 @@ class UserRegisterSerializer(serializers.ModelSerializer):
             if user:
                 ref = Referral.objects.create(
                     referred_by=user, referred_to=instance)
-                print(ref)
 
         return instance
 
