@@ -10,39 +10,9 @@ User = get_user_model()
 
 
 # Create your tests here.
-<<<<<<< HEAD
-=======
-from rest_framework.test import APITestCase
-from django.contrib.auth import get_user_model
-
-User = get_user_model()
->>>>>>> origin/master
-
 class AccountUserTests(APITestCase):
     model = User
 
-<<<<<<< HEAD
-    def __init__(self, methodName):
-        super().__init__(methodName)
-        # test user data
-        self.testuser1_first_name = 'test1'
-        self.testuser1_last_name = 'user1'
-        self.testuser1_username = 'testuser1'
-        self.testuser1_password = 'testabc@123'
-        self.testuser1_email = 'testuser1@gmail.com'
-        self.testuser1_gender = User.MALE
-
-        # staff user data
-        self.staffuser1_first_name = 'staff1'
-        self.staffuser1_last_name = 'user1'
-        self.staffuser1_username = 'staffuser1'
-        self.staffuser1_password = 'staffabc@123'
-        self.staffuser1_email = 'staffuser1@gmail.com'
-        self.staffuser1_gender = User.MALE
-
-    def create_user_and_set_token_credentials(self):
-        user = self.register_user()
-=======
     # test user data
     testuser1_first_name = 'test1'
     testuser1_last_name = 'user1'
@@ -59,25 +29,11 @@ class AccountUserTests(APITestCase):
     staffuser1_email = 'staffuser1@gmail.com'
     staffuser1_gender = User.MALE
 
-    def get_user_token(self, username, password):
-        url = reverse(account_api_views.MyTokenObtainPairView.name)
-        data = {
-            'username': username,
-            'password': password
-        }
-        resp = self.client.post(url, data=data, format='json')
-        token = resp.get('access')
-        return token
-
-    def set_user_token_credentials(self, username, password):
-        token = self.get_user_token(username, password)
-        self.client.credentials(HTTP_AUTHORIZATION='Bearer {0}'.format(token))
-
-    def create_default_testuser_and_set_token_credentials(self):
-        user = self.register_default_testuser()
->>>>>>> origin/master
+    def create_user_and_set_token_credentials(self):
+        user = self.register_user()
         token = Token.objects.create(user)
-        self.client.credentials(HTTP_AUTHORIZATION='Bearer {0}'.format(token.key))
+        self.client.credentials(
+            HTTP_AUTHORIZATION='Bearer {0}'.format(token.key))
 
     def create_staff_user(self):
         data = {
@@ -103,11 +59,7 @@ class AccountUserTests(APITestCase):
             gender      = M
         ```
         """
-<<<<<<< HEAD
-        self.register_user(
-=======
         return self.register_user(
->>>>>>> origin/master
             username=self.testuser1_username, email=self.testuser1_email, password=self.testuser1_password,
             password2=self.testuser1_password, gender=self.testuser1_gender,
             first_name=self.testuser1_first_name, last_name=self.testuser1_last_name
@@ -133,7 +85,8 @@ class AccountUserTests(APITestCase):
             password2=self.testuser1_password, gender=self.testuser1_gender,
             first_name=self.testuser1_first_name, last_name=self.testuser1_last_name
         )
-        user = self.model.objects.get(username=self.testuser1_username, email=self.testuser1_email)
+        user = self.model.objects.get(
+            username=self.testuser1_username, email=self.testuser1_email)
         assert response.status_code == status.HTTP_201_CREATED
         assert response.data['success'] == True
         assert response.data['message'] == "Account created successfully!"
@@ -170,12 +123,8 @@ class AccountUserTests(APITestCase):
         assert response_data_result0['email'] == self.testuser1_email
         assert response_data_result0['username'] == self.testuser1_username
 
-<<<<<<< HEAD
-=======
     def test_get_user_token(self):
         self.create_staff_user()
         users = User.objects.all()
         print(users)
         print(self.get_user_token(self.testuser1_username, self.testuser1_password))
->>>>>>> origin/master
-
