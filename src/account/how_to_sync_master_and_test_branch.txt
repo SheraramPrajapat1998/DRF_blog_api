@@ -9,3 +9,12 @@
 - this will commit the changes with message
 6. git push
 - this will upload the changes to remote backend_tests
+
+
+
+# pytest unit testing library
+# Command to run specific test case
+ex: in `account` app, test case having name `test_register_user` in `AccountUserTests`
+    pytest account/tests.py::AccountUserTests::test_register_user
+
+    pytest category/tests.py::AccountUserTests::test_register_user

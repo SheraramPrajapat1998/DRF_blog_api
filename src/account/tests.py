@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 from django.urls import reverse
-from rest_framework.test import APITestCase
+from rest_framework.test import APITestCase, APIClient
 from rest_framework_simplejwt.tokens import Token
 from account.api import views as account_api_views
 from rest_framework import status
@@ -29,6 +29,23 @@ class AccountUserTests(APITestCase):
     staffuser1_email = 'staffuser1@gmail.com'
     staffuser1_gender = User.MALE
 
+
+    def get_user_token(self, username, password, client=None):
+        url = reverse(account_api_views.MyTokenObtainPairView.name)
+        data = {
+            "username": username,
+            "password": password
+        }
+        client = client or self.client
+        resp = client.post(url, data=data, format='json')
+        print(resp.access)
+        return resp
+
+    def set_user_token_credentials(self, username, password, client=None):
+        resp = self.get_user_token(username, password, client)
+        print('resp', resp, resp.access)
+
+
     def create_user_and_set_token_credentials(self):
         user = self.register_user()
         token = Token.objects.create(user)
@@ -42,7 +59,9 @@ class AccountUserTests(APITestCase):
             "last_name": self.staffuser1_last_name,
             "email": self.staffuser1_email,
             "password": self.staffuser1_password,
-            "gender": self.staffuser1_gender
+            "gender": self.staffuser1_gender,
+            "is_staff": True,
+            "is_superuser": True
         }
         staff_user = User.objects.create_user(**data)
         return staff_user
@@ -123,8 +142,3 @@ class AccountUserTests(APITestCase):
         assert response_data_result0['email'] == self.testuser1_email
         assert response_data_result0['username'] == self.testuser1_username
 
-    def test_get_user_token(self):
-        self.create_staff_user()
-        users = User.objects.all()
-        print(users)
-        print(self.get_user_token(self.testuser1_username, self.testuser1_password))
