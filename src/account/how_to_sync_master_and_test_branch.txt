@@ -1,0 +1,20 @@
+1. git status
+2. git checkout backend_tests
+- this will switch to backend_tests branch
+3. git merge origin/master
+- this will pull the changes from remote master branch
+4. git add .
+- this will add the changed files to our remote branch
+5. git commit -m "master branch"
+- this will commit the changes with message
+6. git push
+- this will upload the changes to remote backend_tests
+
+
+
+# pytest unit testing library
+# Command to run specific test case
+ex: in `account` app, test case having name `test_register_user` in `AccountUserTests`
+    pytest account/tests.py::AccountUserTests::test_register_user
+
+    pytest category/tests.py::AccountUserTests::test_register_user
